@@ -1,15 +1,20 @@
 const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
-const morgan = require('morgan')
-const cors = require('cors')
+const morgan = require("morgan")
+const cors = require("cors")
 app.use(bodyParser.json())
 app.use(cors())
-morgan.token('body', (req) => {
-    return JSON.stringify(req.body)})
+morgan.token("body", req => {
+  return JSON.stringify(req.body)
+})
 
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body'))
-
+app.use(
+  morgan(
+    ":method :url :status :response-time ms - :res[content-length] :body"
+  )
+)
+app.use(express.static("build"))
 
 let persons = [
   {
@@ -71,7 +76,6 @@ app.post(
   (req, res) => {
     const body = req.body
 
-
     if (body.name === undefined)
       return res.status(400).json({
         error: "Nimi puuttuu."
@@ -84,7 +88,7 @@ app.post(
       return res.status(400).json({
         error: "Numero puuttuu."
       })
-    if (body.number==="")
+    if (body.number === "")
       return res.status(400).json({
         error: "Numero tyhjä."
       })
